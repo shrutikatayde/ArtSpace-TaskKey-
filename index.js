@@ -1,12 +1,12 @@
 // JavaScript code here
 const taskContainer = document.querySelector(".task__container");
 
-const globalStore = [];  //array
+const globalStore = []; //array
 
 console.log(taskContainer);
 
 const generateNewCard = (taskData) =>
-  `  <div>
+  ` 
     <div class="col-sm-12 col-md-6 col-lg-4" id="${taskData.id}">
       <div class="card" style="width: 18rem">
         <div class="card-header d-flex justify-content-end gap-2">
@@ -27,14 +27,7 @@ const generateNewCard = (taskData) =>
           
         </div>
       </div>
-    </div></div>
-    <div class="card-footer d-flex justify-content-center ">
-    <button type="button" class="btn btn-primary" onclick="restoreDeletedCard('${taskData.id}')"><i class="fa fa-window-restore" aria-hidden="true"></i>
-    Restore
-    </button>
-    <div/>
-    
-   
+    </div>
   `;
 
 const loadInitialCardData = () => {
@@ -67,11 +60,9 @@ const saveChanges = () => {
   localStorage.setItem("navbar", JSON.stringify({ cards: globalStore }));
 };
 
-
 let deletedCards = [];
 // Below deleteCard() function delete the taskCard from taskContainer..
 const deleteCard = (id) => {
-
   // if (!isUserAuthenticated()) {
   //   alert("Please login to delete the card.");
   //   return;
@@ -95,16 +86,15 @@ const deleteCard = (id) => {
     }
 
     localStorage.setItem("navbar", JSON.stringify({ cards: globalStore }));
-  };
+  }
 };
-
 
 // Below editCard() function edit the taskCard from taskContainer..
 function editCard(id) {
   // Find the card in the globalStore array by its ID
-  const cardIndex = globalStore.findIndex(card => card.id === id);
+  const cardIndex = globalStore.findIndex((card) => card.id === id);
   if (cardIndex === -1) {
-    console.log('Card not found');
+    console.log("Card not found");
     return;
   }
 
@@ -115,10 +105,13 @@ function editCard(id) {
   const originalCardData = { ...card };
 
   // Prompt the user for new card information  prompt()--->> use for propting user for taking input form user.
-  const newImageUrl = prompt('Enter the new image URL', card.imageUrl);
-  const newTaskTitle = prompt('Enter the new task title', card.taskTitle);
-  const newTaskType = prompt('Enter the new task type', card.taskType);
-  const newTaskDescription = prompt('Enter the new task description', card.taskDescription);
+  const newImageUrl = prompt("Enter the new image URL", card.imageUrl);
+  const newTaskTitle = prompt("Enter the new task title", card.taskTitle);
+  const newTaskType = prompt("Enter the new task type", card.taskType);
+  const newTaskDescription = prompt(
+    "Enter the new task description",
+    card.taskDescription
+  );
 
   // Update the cardObject with the new information
   card.imageUrl = newImageUrl;
@@ -136,7 +129,7 @@ function editCard(id) {
   globalStore[cardIndex] = card;
 
   // Prompt the user to confirm the changes or revert them
-  const confirmChanges = confirm('Do you want to save the changes?');
+  const confirmChanges = confirm("Do you want to save the changes?");
   if (!confirmChanges) {
     // Revert changes by restoring the original card data
     globalStore[cardIndex] = originalCardData;
@@ -148,7 +141,7 @@ function editCard(id) {
   }
 
   // Update the card data in local storage
-  localStorage.setItem('navbar', JSON.stringify({ cards: globalStore }));
+  localStorage.setItem("navbar", JSON.stringify({ cards: globalStore }));
 }
 
 // function isUserAuthenticated() {
@@ -156,24 +149,66 @@ function editCard(id) {
 //   // Return true if the user is authenticated, otherwise false
 // }
 
-
 // function hasDeletePermissions() {
 //   //   permission check logic here
 //   // Return true if the authenticated user has delete permissions, otherwise false
 // }
 
-function restoreDeletedCard(id) {
-  const deletedCardIndex = deletedCards.findIndex((card) => card.id === id);
+// function restoreDeletedCard() {
+//   const deletedCardIndex = deletedCards.findIndex((card) => card.id === id);
 
-  if (deletedCardIndex !== -1) {
-    const restoredCard = deletedCards.splice(deletedCardIndex, 1)[0];
-    globalStore.push(restoredCard);
+//   if (deletedCardIndex !== -1) {
+//     const restoredCard = deletedCards.splice(deletedCardIndex, 1)[0];
+//     globalStore.push(restoredCard);
 
-    localStorage.setItem("navbar", JSON.stringify({ cards: globalStore }));
+//     localStorage.setItem("navbar", JSON.stringify({ cards: globalStore }));
 
-    taskContainer.insertAdjacentHTML(
-      "beforeend",
-      generateNewCard(restoredCard)
+//     taskContainer.insertAdjacentHTML(
+//       "beforeend",
+//       generateNewCard(restoredCard)
+//     );
+//   }
+// }
+
+const searchInput = document.getElementById("searchInput");
+const cardNotFound = document.getElementById("cardNotFound");
+
+searchInput.addEventListener("input", searchTaskCards);
+
+var searchTaskCards = (event) => {
+  const searchQuery = event.target.value.toLowerCase().trim();
+
+  // Filter the task cards based on the search query
+  const filteredCards = globalStore.filter((taskData) => {
+    const title = taskData.taskTitle.toLowerCase();
+    const description = taskData.taskDescription.toLowerCase();
+    const type = taskData.taskType.toLowerCase();
+
+    return (
+      title.includes(searchQuery) ||
+      description.includes(searchQuery) ||
+      type.includes(searchQuery)
     );
+  });
+
+  // Clear the task container
+  taskContainer.innerHTML = "";
+
+  // Render the filtered task cards or display a message
+  if (filteredCards.length === 0) {
+    const message = `
+      <div class="col">
+        <p class="text-muted">No matching cards found.</p>
+      </div>
+    `;
+    taskContainer.insertAdjacentHTML("beforeend", message);
+  } else {
+    filteredCards.forEach((taskData) => {
+      taskContainer.insertAdjacentHTML("beforeend", generateNewCard(taskData));
+    });
   }
-}
+};
+
+// Event listener for the search input
+
+searchInput.addEventListener("input", searchTaskCards);

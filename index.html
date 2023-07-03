@@ -19,7 +19,8 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
-    <title>Document</title>
+    <title>ArtSpace</title>
+    <link rel="shortcut icon" type="iamge/png" href="./assets/favicon.png" >
   </head>
 
   <style>
@@ -138,7 +139,7 @@
 
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
       <div class="container-fluid">
-        <a class="navbar-brand fw-bold text-primary" href="#">Navbar</a>
+        <a class="navbar-brand" href="index.html"><img src="./assets/logo.png" style="width: 120px; height: 30px;" /></a>
         <button
           class="navbar-toggler"
           type="button"
@@ -153,7 +154,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link active fw-bold" aria-current="page" href="#"
+              <a class="nav-link active fw-bold" aria-current="page" href="index.html"
                 >Home</a
               >
             </li>
@@ -180,12 +181,13 @@
     <div class="container">
       <div class="row mt-3">
         <div class="col"></div>
-        <div class="col-sm-12 col-md-6 col-lg-4">
+        <div class="col-sm-12 col-md-6 col-lg-5">
           <div class="input-group mb-3">
             <input
               type="text"
               class="form-control"
-              placeholder="Search here"
+              id="searchInput"
+              placeholder="Search by type of art. eg. digital, fine art.."
               aria-label="Search here"
               aria-describedby="basic-addon2"
             />
@@ -197,14 +199,29 @@
         <div class="col"></div>
       </div>
       <div class="row task__container">
+        
+
+      </div>
        
         
-      </div>
+      <!--<div class="deletedContainer">
+        <div class="card-footer d-flex justify-content-center ">
+          <button 
+          type="button" 
+          class="btn btn-primary restore-btn" 
+          id="restoreButton"
+          onclick="restoreDeletedCard()">
+          <i class="fa fa-window-restore" aria-hidden="true"></i>
+          Restore
+          </button>
+          <div/>
+
+      </div> -->
       
 
     <script src="
 https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js
 "></script>
-    <script src="1.js"></script>
+    <script src="index.js"></script>
   </body>
 </html>
