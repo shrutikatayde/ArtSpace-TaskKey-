@@ -18,7 +18,7 @@ const generateNewCard = (taskData) =>
           </button>
         </div>
         <div class="card-body">
-          <img src=${taskData.imageUrl} class="card-img-top" />
+          <img src="${taskData.imageUrl}" class="card-img-top" />
           <h5 class="card-title fw-bold text-primary mt-2">${taskData.taskTitle}</h5>
           <p class="card-text">
             ${taskData.taskDescription}
@@ -46,18 +46,28 @@ const loadInitialCardData = () => {
 };
 
 const saveChanges = () => {
-  const taskData = {
-    id: `${Date.now()}`,
-    imageUrl: document.getElementById("imageurl").value,
-    taskTitle: document.getElementById("tasktitle").value,
-    taskType: document.getElementById("tasktype").value,
-    taskDescription: document.getElementById("taskdescription").value,
+  const fileInput = document.getElementById("imageupload");
+  const file = fileInput.files[0]; //select the file
+
+  const reader = new FileReader();
+  reader.readAsDataURL(file); //file read as it is data url
+
+  reader.onload = function () {
+    const imageDataUrl = reader.result; // take data url
+
+    const taskData = {
+      id: `${Date.now()}`,
+      imageUrl: imageDataUrl,
+      taskTitle: document.getElementById("tasktitle").value,
+      taskType: document.getElementById("tasktype").value,
+      taskDescription: document.getElementById("taskdescription").value,
+    };
+
+    taskContainer.insertAdjacentHTML("beforeend", generateNewCard(taskData));
+
+    globalStore.push(taskData);
+    localStorage.setItem("navbar", JSON.stringify({ cards: globalStore }));
   };
-
-  taskContainer.insertAdjacentHTML("beforeend", generateNewCard(taskData));
-
-  globalStore.push(taskData);
-  localStorage.setItem("navbar", JSON.stringify({ cards: globalStore }));
 };
 
 let deletedCards = [];

@@ -62,7 +62,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h1 class="modal-title fs-5" id="exampleModalLabel">
-              Add New Task
+              Add New Image
             </h1>
             <button
               type="button"
@@ -73,38 +73,38 @@
           </div>
           <div class="modal-body">
             <div class="mb-3 mt-3">
-              <label for="imageurl" class="form-label">Image Url</label>
+              <label for="imageupload" class="form-label">Upload Image</label>
               <input
-                type="url"
+                type="file"
                 class="form-control"
-                id="imageurl"
-                aria-describedby="Image Url"
-                placeholder="Enter Image url"
+                id="imageupload"
+                accept="image/*"
+                placeholder="Choose File"
               />
             </div>
             <div class="mb-3 mt-3">
-              <label for="tasktitle" class="form-label">Task Title</label>
+              <label for="tasktitle" class="form-label">Image Title</label>
               <input
                 type="text"
                 class="form-control"
                 id="tasktitle"
                 aria-describedby="Task Title"
-                placeholder="Enter Task Title"
+                placeholder="Enter Image Title"
               />
             </div>
             <div class="mb-3 mt-3">
-              <label for="tasktitle" class="form-label">Task Type</label>
+              <label for="tasktitle" class="form-label">Image Type</label>
               <input
                 type="text"
                 class="form-control"
                 id="tasktype"
                 aria-describedby="Task Type"
-                placeholder="Enter Task Type"
+                placeholder="Enter Image Type"
               />
             </div>
             <div class="mb-3 mt-3">
               <label for="taskdescription" class="form-label"
-                >Task Description</label
+                >Image Description</label
               >
               <textarea
                 rows="5"
@@ -112,7 +112,7 @@
                 class="form-control"
                 id="taskdescription"
                 aria-describedby="Task Description"
-                placeholder="Enter Task Description"
+                placeholder="Enter Image Description"
               ></textarea>
             </div>
           </div>
