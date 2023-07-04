@@ -101,58 +101,60 @@ const deleteCard = (id) => {
 
 // Below editCard() function edit the taskCard from taskContainer..
 function editCard(id) {
-  // Find the card in the globalStore array by its ID
   const cardIndex = globalStore.findIndex((card) => card.id === id);
   if (cardIndex === -1) {
     console.log("Card not found");
     return;
   }
 
-  // Retrieve the cardObject from the globalStore
   const card = globalStore[cardIndex];
-
-  // Create a copy of the original card data which we use to revert back the changes when we cancle the editFunction()
   const originalCardData = { ...card };
 
-  // Prompt the user for new card information  prompt()--->> use for propting user for taking input form user.
-  const newImageUrl = prompt("Enter the new image URL", card.imageUrl);
-  const newTaskTitle = prompt("Enter the new task title", card.taskTitle);
-  const newTaskType = prompt("Enter the new task type", card.taskType);
-  const newTaskDescription = prompt(
-    "Enter the new task description",
-    card.taskDescription
-  );
+  const fileInput = document.createElement("input");
+  fileInput.type = "file";
+  fileInput.accept = "image/*";
+  fileInput.addEventListener("change", (event) => {
+    const file = event.target.files[0];
 
-  // Update the cardObject with the new information
-  card.imageUrl = newImageUrl;
-  card.taskTitle = newTaskTitle;
-  card.taskType = newTaskType;
-  card.taskDescription = newTaskDescription;
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
 
-  // Update the card in the taskContainer HTML
-  const cardElement = document.getElementById(id);
-  if (cardElement) {
-    cardElement.innerHTML = generateNewCard(card);
-  }
+    reader.onload = function () {
+      // const newImageUrl = prompt("Enter the new image URL", card.imageUrl);
+      const newTaskTitle = prompt("Enter the new task title", card.taskTitle);
+      const newTaskType = prompt("Enter the new task type", card.taskType);
+      const newTaskDescription = prompt("Enter the new task description", card.taskDescription);
 
-  // Update the card in the globalStore array
-  globalStore[cardIndex] = card;
 
-  // Prompt the user to confirm the changes or revert them
-  const confirmChanges = confirm("Do you want to save the changes?");
-  if (!confirmChanges) {
-    // Revert changes by restoring the original card data
-    globalStore[cardIndex] = originalCardData;
+      const imageDataUrl = reader.result;
+      card.imageUrl = imageDataUrl;
+      card.taskTitle = newTaskTitle;
+      card.taskType = newTaskType;
+      card.taskDescription = newTaskDescription;
 
-    // Update the card in the taskContainer HTML
-    if (cardElement) {
-      cardElement.innerHTML = generateNewCard(originalCardData);
-    }
-  }
 
-  // Update the card data in local storage
-  localStorage.setItem("navbar", JSON.stringify({ cards: globalStore }));
+      const cardElement = document.getElementById(id);
+      if (cardElement) {
+        cardElement.innerHTML = generateNewCard(card);
+      }
+
+      const confirmChanges = confirm("Do you want to save the changes?");
+      if (!confirmChanges) {
+        globalStore[cardIndex] = originalCardData;
+
+        if (cardElement) {
+          cardElement.innerHTML = generateNewCard(originalCardData);
+        }
+      }
+
+      localStorage.setItem("navbar", JSON.stringify({ cards: globalStore }));
+    };
+  });
+
+  fileInput.click();
 }
+
+
 
 // function isUserAuthenticated() {
 //   //  authentication check logic
